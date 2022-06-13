@@ -14,10 +14,20 @@ public class TestInformeCortes {
 	public static void main(String[] args) {
 		List<CorteElectrico> cortes=FactoriaCortes.leeCortes("data/cortes.csv");
 		InformeCortes c=new InformeCortes(cortes);
+		System.out.println("\nTestMediaAfectadosEnRegiones");
+		System.out.println("===================================================");
 		testMediaAfectadosEnRegiones(c,Severidad.ALTO, Set.of("Pokemon_Españita","portugal"));
+		System.out.println("\nTestCompañiasCortesMasRecientes");
+		System.out.println("===================================================");
 		testCompañiasCortesMasRecientes(c,"UNICORNIO",40);
+		System.out.println("\nTestCompañiasConCortesCriticosPorRegion");
+		System.out.println("===================================================");
 		testCompañiasConCortesCriticosPorRegion(c);
+		System.out.println("\nTestCompañiasConCortesCriticosPorRegion2");
+		System.out.println("===================================================");
 		testCompañiasConCortesCriticosPorRegion2(c);
+		System.out.println("\nTestCompañiaConMasAfectadosEnFecha");
+		System.out.println("===================================================");
 		testCompañiaConMasAfectadosEnFecha(c,LocalDate.of(1994, 9, 16));
 		
 

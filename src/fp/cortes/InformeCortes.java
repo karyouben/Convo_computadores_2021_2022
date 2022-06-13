@@ -88,6 +88,8 @@ public class InformeCortes {
 		cortes.remove(c);
 	}
 	
+	//ejercicio 1
+	
 	public Double mediaAfectadosEnRegiones(Severidad s,Set<String> regiones) {
 		return cortes.stream()
 				.filter(c->c.severidad().equals(s) && regiones.contains(c.region()))
@@ -96,6 +98,8 @@ public class InformeCortes {
 				.getAsDouble();
 		
 	}
+	
+	//ejercicio 2
 	
 	public List<String> compañiasCortesMasRecientes(String etiqueta,Integer n){
 		return cortes.stream()
@@ -107,6 +111,8 @@ public class InformeCortes {
 				.collect(Collectors.toList());
 				
 	}
+	
+	//ejercicio 3
 	
 	public SortedMap<String,SortedSet<String>> compañiasConCortesCriticosPorRegion(){
 		SortedMap<String,SortedSet<String>> res=new TreeMap<>();
@@ -130,6 +136,7 @@ public class InformeCortes {
 		//se puede tambien con un Collectors.toSet() al estar ya ordenado en el auxiliar
 	}
 	
+	
 
 	private SortedSet<String> obtieneConjunto(Set<CorteElectrico> lista){
 		return lista.stream()
@@ -140,30 +147,32 @@ public class InformeCortes {
 				
 	}
 	
+	//ejercicio 4
+	
 	public Map<Severidad,Double> porcentajeCortesPorSeveridadEnRegion(String region){
-		Double Porcentajazo=porcentaje(null);
-		return cortes.stream()
-				.filter(c->c.region().equals(region))
-				.collect(Collectors.groupingBy(CorteElectrico::severidad,Collectors.collectingAndThen(Collectors.counting(), c->c.doubleValue())));
+		Map<Severidad,Double> res=null;
+		Map<Severidad,Long> m=numeroCortesPorSeveridad(region);
+		Long p=cortesTotales(region);
+		if(p>0)
+			res= m.entrySet().stream()
+			.collect(Collectors.toMap(c->c.getKey(), c->c.getValue()*100.0/p));
+		return res;
 		
 	}
 	
-	public Double porcentaje(Severidad severidad) {
-		Double total=auxiliar();
-		Double porcentaje=0D;
-		for(CorteElectrico c:cortes) {
-			if(c.severidad().equals(severidad)) {
-				porcentaje+=1;
-			}
-		}return (porcentaje/total)*100;
+	public Long cortesTotales(String region) {
+		return cortes.stream()
+				.filter(c->c.region().equals(region))
+				.count();
 	}
 	
-	public Double auxiliar() {
-		Double etiquetas=0D;
-		for(CorteElectrico c:cortes) {
-			etiquetas+=c.etiquetas().size();
-		}return etiquetas;
+	public Map<Severidad,Long> numeroCortesPorSeveridad(String region){
+		return cortes.stream()
+				.collect(Collectors.groupingBy(CorteElectrico::severidad,Collectors.counting()));
 	}
+	
+	
+	//ejercicio 5
 	
 	public String compañiaConMasAfectadosEnFecha(LocalDate f) {
 		Map<String,Integer> m= consumidoresAfectadosPorCompañia(f);
@@ -182,7 +191,6 @@ public class InformeCortes {
 		
 	}
 	
-
 	
 	
 	
